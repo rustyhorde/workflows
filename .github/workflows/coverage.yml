@@ -13,22 +13,32 @@ on:
         description: 'The rust target, i.e x86_64-unknown-linux-gnu'
         required: true
         type: string
-      num_chunks:
-        description: 'The number of chunks to run for test-all-features'
-        default: 1
+      clean:
+        description: 'Clean the workspace before running llvm-cov'
+        default: false
         required: false
-        type: number
-      chunk:
-        description: 'The chunk number to run for test-all-features'
-        default: 1
+        type: boolean
+      lcov:
+        description: 'Generate an LCOV report (lcov.info)'
+        default: false
         required: false
-        type: number
-
-name: 🧪 Test 🧪
+        type: boolean
+      html:
+        description: 'Generate an HTML report'
+        default: false
+        required: false
+        type: boolean
+      run_cmd:
+        description: 'The command to run to generate the llvm-cov output'
+        default: cargo llvm-cov --no-report
+        required: false
+        type: string
+  
+name: 🧱 Coverage 🧱
 
 jobs:
-  test-all-features:
-    name: 🧪 Test 🧪
+  coverage:
+    name: 🧱 Coverage 🧱
     runs-on: ${{ inputs.os }}
     steps:
       - name: ✅ Checkout ✅
@@ -44,6 +54,7 @@ jobs:
           rustup toolchain remove ${{ inputs.channel }}-${{ inputs.target }}
           rustup toolchain add ${{ inputs.channel }}-${{ inputs.target }} --profile minimal
           rustup default ${{ inputs.channel }}
+          rustup component add llvm-tools-preview
       - name: 💵 Rust Cache 💵
         uses: Swatinem/rust-cache@v2
         if: ${{ github.event_name != 'pull_request' || ! github.event.pull_request.head.repo.fork }}
@@ -52,7 +63,23 @@ jobs:
           cache-all-crates: true
       - name: 💾 Install (cargo-binstall) 💾
         uses: cargo-bins/cargo-binstall@main
-      - name: 💾 Install (all-features) 💾
-        run: cargo binstall --no-confirm --no-symlinks cargo-all-features --force
-      - name: 🧪 Test 🧪
-        run:  cargo test-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }}
+      - name: 💾 Install (llvm-cov) 💾
+        run: cargo binstall --no-confirm --no-symlinks cargo-llvm-cov --force
+      - name: 🙊 Clean Workspace 🙊
+        if: inputs.clean
+        run: cargo llvm-cov clean --workspace
+      - name: 🙊 Code Coverage 🙊
+        run: ${{ inputs.run_cmd }}
+      - name: 🙊 Code Coverage Report (LCOV) 🙊
+        if: inputs.lcov
+        run: cargo llvm-cov report --lcov --output-path lcov.info
+      - name: 🙊 Code Coverage Report (HTML) 🙊
+        if: inputs.html
+        run: cargo llvm-cov report --html
+      - name: 🙊 Upload Code Coverage 🙊
+        if: inputs.lcov
+        uses: codecov/codecov-action@v4-beta
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./lcov.info

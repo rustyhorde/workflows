@@ -2,15 +2,19 @@ on:
   workflow_call:
     inputs:
       os:
+        description: 'The os to run this job on [ubuntu-latest, macos-latest, windows-latest]'
         required: true
         type: string
       channel:
+        description: 'The rust channel to use [stable, beta, nightly, version i.e. 1.70.0]'
         required: true
         type: string
       target:
+        description: 'The rust target, i.e x86_64-unknown-linux-gnu'
         required: true
         type: string
       cargo_dir:
+        description: 'The local directory containing the Cargo.toml for side loaded cargo-all-features'
         required: true
         type: string
 
