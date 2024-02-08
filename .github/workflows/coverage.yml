@@ -40,10 +40,6 @@ jobs:
   coverage:
     name: 🧱 Coverage 🧱
     runs-on: ${{ inputs.os }}
-    env:
-      BB8_MONGODB_URL: ${{ secrets.BB8_MONGODB_URL }}
-      BB8_MONGODB_USER: ${{ secrets.BB8_MONGODB_USER }}
-      BB8_MONGODB_PASSWORD: ${{ secrets.BB8_MONGODB_PASSWORD }}
     steps:
       - name: ✅ Checkout ✅
         uses: actions/checkout@v4
@@ -73,6 +69,10 @@ jobs:
         if: inputs.clean
         run: cargo llvm-cov clean --workspace
       - name: 🙊 Code Coverage 🙊
+        env:
+          BB8_MONGODB_URL: ${{ secrets.BB8_MONGODB_URL }}
+          BB8_MONGODB_USER: ${{ secrets.BB8_MONGODB_USER }}
+          BB8_MONGODB_PASSWORD: ${{ secrets.BB8_MONGODB_PASSWORD }}
         run: ${{ inputs.run_cmd }}
       - name: 🙊 Code Coverage Report (LCOV) 🙊
         if: inputs.lcov
