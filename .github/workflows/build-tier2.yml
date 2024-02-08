@@ -44,7 +44,7 @@ jobs:
           rm -rf /home/runner/.cargo/bin/rust-analyzer
           rustup toolchain remove nightly-x86_64-unknown-linux-gnu
           rustup toolchain add nightly-x86_64-unknown-linux-gnu --profile minimal
-          rustup target add ${{ matrix.targets.target }}
+          rustup target add ${{ matrix.targets }}
           rustup default nightly
       - name: 💵 Rust Cache 💵
         uses: Swatinem/rust-cache@v2
