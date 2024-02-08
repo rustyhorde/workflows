@@ -1,0 +1,74 @@
+on:
+  workflow_dispatch:
+    inputs:
+      num_chunks:
+        description: "The number of chunks to run for test-all-features"
+        default: 1
+        required: false
+        type: number
+      chunk:
+        description: "The chunk number to run for test-all-features"
+        default: 1
+        required: false
+        type: number
+  workflow_call:
+    inputs:
+      num_chunks:
+        description: "The number of chunks to run for test-all-features"
+        default: 1
+        required: false
+        type: number
+      chunk:
+        description: "The chunk number to run for test-all-features"
+        default: 1
+        required: false
+        type: number
+
+name: 🦀 Rust (Tier 2) 🦀
+
+jobs:
+  build-tier-2:
+    name: 🧱 Build 🧱
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        targets:
+          [
+            aarch64-linux-android,
+            aarch64-unknown-linux-gnu,
+            aarch64-unknown-linux-musl,
+            i686-pc-windows-gnu,
+            i686-unknown-linux-gnu,
+            powerpc-unknown-linux-gnu,
+            powerpc64-unknown-linux-gnu,
+            riscv64gc-unknown-linux-gnu,
+            sparc64-unknown-linux-gnu,
+            wasm32-unknown-emscripten,
+            x86_64-unknown-linux-musl,
+          ]
+    steps:
+      - name: ✅ Checkout ✅
+        uses: actions/checkout@v4
+      - name: 🧰 Toolchain 🧰
+        run: |
+          rm -rf /home/runner/.cargo/bin/rustfmt
+          rm -rf /home/runner/.cargo/bin/cargo-fmt
+          rm -rf /home/runner/.cargo/bin/rust-analyzer
+          rustup toolchain remove nightly-x86_64-unknown-linux-gnu
+          rustup toolchain add nightly-x86_64-unknown-linux-gnu --profile minimal
+          rustup target add ${{ matrix.targets.target }}
+          rustup default nightly
+      - name: 💵 Rust Cache 💵
+        uses: Swatinem/rust-cache@v2
+        if: ${{ github.event_name != 'pull_request' || ! github.event.pull_request.head.repo.fork }}
+        with:
+          key: x86_64-unknown-linux-gnu
+          cache-all-crates: true
+      - name: 💾 Install (cargo-binstall) 💾
+        uses: cargo-bins/cargo-binstall@main
+      - name: 💾 Install (all-features) 💾
+        run: cargo binstall --no-confirm --no-symlinks cargo-all-features --force
+      - name: 💾 Install (cross) 💾
+        run: cargo binstall --no-confirm --no-symlinks cross --force
+      - name: 🧱 Build 🧱
+        run: cross build-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{inputs.chunk }} --target=${{ matrix.targets.target }}
