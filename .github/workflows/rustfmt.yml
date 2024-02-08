@@ -1,0 +1,14 @@
+on:
+  workflow_call:
+  
+name: 📌 Formatting 📌
+
+jobs:
+  rustfmt:
+    name: 📌 Formatting 📌
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✅ Checkout ✅
+        uses: actions/checkout@v4
+      - name: ⭕ Rustfmt Check ⭕
+        run: cargo fmt --all -- --check
