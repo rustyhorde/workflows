@@ -78,7 +78,7 @@ jobs:
         run: cargo llvm-cov report --html
       - name: 🙊 Upload Code Coverage 🙊
         if: inputs.lcov
-        uses: codecov/codecov-action@v4-beta
+        uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
