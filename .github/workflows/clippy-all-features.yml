@@ -11,6 +11,9 @@ on:
         required: true
         type: string
 
+env:
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
 name: 🕳️ Clippy 🕳️
 
 jobs:
