@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        targets:
+        target:
           [
             aarch64-linux-android,
             aarch64-unknown-linux-gnu,
@@ -44,7 +44,7 @@ jobs:
           rm -rf /home/runner/.cargo/bin/rust-analyzer
           rustup toolchain remove nightly-x86_64-unknown-linux-gnu
           rustup toolchain add nightly-x86_64-unknown-linux-gnu --profile minimal
-          rustup target add ${{ matrix.targets }}
+          rustup target add ${{ matrix.target }}
           rustup default nightly
       - name: 💵 Rust Cache 💵
         uses: Swatinem/rust-cache@v2
@@ -59,4 +59,4 @@ jobs:
       - name: 💾 Install (cross) 💾
         run: cargo binstall --no-confirm --no-symlinks cross --force
       - name: 🧱 Build 🧱
-        run: cross build-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{inputs.chunk }} --target=${{ matrix.targets.target }}
+        run: cross build-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{inputs.chunk }} --target=${{ matrix.target }}
