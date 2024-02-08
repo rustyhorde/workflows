@@ -40,6 +40,10 @@ jobs:
   coverage:
     name: 🧱 Coverage 🧱
     runs-on: ${{ inputs.os }}
+    env:
+      BB8_MONGODB_URL: ${{ secrets.BB8_MONGODB_URL }}
+      BB8_MONGODB_USER: ${{ secrets.BB8_MONGODB_USER }}
+      BB8_MONGODB_PASSWORD: ${{ secrets.BB8_MONGODB_PASSWORD }}
     steps:
       - name: ✅ Checkout ✅
         uses: actions/checkout@v4
