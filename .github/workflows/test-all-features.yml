@@ -1,0 +1,51 @@
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      channel:
+        required: true
+        type: string
+      target:
+        required: true
+        type: string
+      num_chunks:
+        required: true
+        type: number
+      chunk:
+        required: true
+        type: number
+
+name: 🧪 Test 🧪
+
+jobs:
+  test-all-features:
+    name: 🧪 Test 🧪
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: ✅ Checkout ✅
+        uses: actions/checkout@v4
+      - name: 🧹 Cleanup 🧹
+        if: inputs.os == 'ubuntu-latest'
+        run: |
+          rm -rf /home/runner/.cargo/bin/rustfmt
+          rm -rf /home/runner/.cargo/bin/cargo-fmt
+          rm -rf /home/runner/.cargo/bin/rust-analyzer
+      - name: 🧰 Toolchain 🧰
+        run: |
+          rustup toolchain remove ${{ inputs.channel }}-${{ inputs.target }}
+          rustup toolchain add ${{ inputs.channel }}-${{ inputs.target }} --profile minimal
+          rustup default ${{ inputs.channel }}
+      - name: 💵 Rust Cache 💵
+        uses: Swatinem/rust-cache@v2
+        if: ${{ github.event_name != 'pull_request' || ! github.event.pull_request.head.repo.fork }}
+        with:
+          key: ${{ inputs.target }}
+          cache-all-crates: true
+      - name: 💾 Install (cargo-binstall) 💾
+        uses: cargo-bins/cargo-binstall@main
+      - name: 💾 Install (all-features) 💾
+        run: cargo binstall --no-confirm --no-symlinks cargo-all-features --force
+      - name: 🧪 Test 🧪
+        run:  cargo test-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }}
