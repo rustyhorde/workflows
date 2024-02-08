@@ -1,0 +1,52 @@
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      channel:
+        required: true
+        type: string
+      target:
+        required: true
+        type: string
+
+name: 🕳️ Clippy 🕳️
+
+jobs:
+  clippy-all-features:
+    name: 🕳️ Lints 🕳️
+    runs-on: ${{ inputs.os }}
+    steps:
+      - name: ✅ Checkout ✅
+        uses: actions/checkout@v4
+      - name: 🧹 Cleanup 🧹
+        if: inputs.os == 'ubuntu-latest'
+        run: |
+          rm -rf /home/runner/.cargo/bin/rustfmt
+          rm -rf /home/runner/.cargo/bin/cargo-fmt
+          rm -rf /home/runner/.cargo/bin/rust-analyzer
+      - name: 🧰 Toolchain 🧰
+        run: |
+          rustup toolchain remove ${{ inputs.channel }}
+          rustup toolchain install ${{ inputs.channel }} --profile default
+          rustup default ${{ inputs.channel }}
+      - name: 💵 Rust Cache 💵
+        uses: Swatinem/rust-cache@v2
+        if: ${{ github.event_name != 'pull_request' || ! github.event.pull_request.head.repo.fork }}
+        with:
+          key: ${{ inputs.target }}
+          cache-all-crates: true
+      - name: 💾 Install (cargo-binstall) 💾
+        uses: cargo-bins/cargo-binstall@main
+      - name: 💾 Install (all-features) 💾
+        if: inputs.os == 'ubuntu-latest'
+        run: cargo binstall --no-confirm --no-symlinks --manifest-path custom cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-unknown-linux-musl.tar.xz" --pkg-fmt="txz"
+      - name: 💾 Install (all-features) 💾
+        if: inputs.os == 'macos-latest'
+        run: cargo binstall --no-confirm --no-symlinks --manifest-path side_load cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-apple-darwin.zip" --pkg-fmt="zip"
+      - name: 💾 Install (all-features) 💾
+        if: inputs.os == 'windows-latest'
+        run: cargo binstall --no-confirm --no-symlinks --manifest-path side_load cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-pc-windows-gnu.zip" --pkg-fmt="zip"
+      - name: 📎 Clippy 📎
+        run: cargo clippy-all-features -- -Dwarnings
