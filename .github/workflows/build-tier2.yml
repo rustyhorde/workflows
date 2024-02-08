@@ -1,16 +1,4 @@
 on:
-  workflow_dispatch:
-    inputs:
-      num_chunks:
-        description: "The number of chunks to run for test-all-features"
-        default: 1
-        required: false
-        type: number
-      chunk:
-        description: "The chunk number to run for test-all-features"
-        default: 1
-        required: false
-        type: number
   workflow_call:
     inputs:
       num_chunks:
