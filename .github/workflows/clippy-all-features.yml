@@ -11,9 +11,6 @@ on:
         required: true
         type: string
 
-env:
-  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
 name: 🕳️ Clippy 🕳️
 
 jobs:
@@ -44,12 +41,12 @@ jobs:
         uses: cargo-bins/cargo-binstall@main
       - name: 💾 Install (all-features) 💾
         if: inputs.os == 'ubuntu-latest'
-        run: cargo binstall --no-confirm --no-symlinks --manifest-path custom cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-unknown-linux-musl.tar.xz" --pkg-fmt="txz"
+        run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token --manifest-path custom cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-unknown-linux-musl.tar.xz" --pkg-fmt="txz"
       - name: 💾 Install (all-features) 💾
         if: inputs.os == 'macos-latest'
-        run: cargo binstall --no-confirm --no-symlinks --manifest-path side_load cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-apple-darwin.zip" --pkg-fmt="zip"
+        run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token --manifest-path side_load cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-apple-darwin.zip" --pkg-fmt="zip"
       - name: 💾 Install (all-features) 💾
         if: inputs.os == 'windows-latest'
-        run: cargo binstall --no-confirm --no-symlinks --manifest-path side_load cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-pc-windows-gnu.zip" --pkg-fmt="zip"
+        run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token --manifest-path side_load cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-pc-windows-gnu.zip" --pkg-fmt="zip"
       - name: 📎 Clippy 📎
         run: cargo clippy-all-features -- -Dwarnings
