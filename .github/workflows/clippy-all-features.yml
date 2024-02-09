@@ -18,7 +18,7 @@ on:
         required: true
         type: string
       update:
-        description: 'Run `cargo update` before running clippy command'
+        description: 'Run cargo update before running clippy command'
         required: false
         default: false
         type: boolean
