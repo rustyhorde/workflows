@@ -17,6 +17,11 @@ on:
         description: 'The local directory containing the Cargo.toml for side loaded cargo-all-features'
         required: true
         type: string
+      update:
+        description: 'Run `cargo update` before running clippy command'
+        required: false
+        default: false
+        type: boolean
 
 name: 🕳️ Clippy 🕳️
 
@@ -55,5 +60,8 @@ jobs:
       - name: 💾 Install (all-features) 💾
         if: inputs.os == 'windows-latest'
         run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token --manifest-path ${{ inputs.cargo_dir }} cargo-all-features --force --pkg-url "https://github.com/rustyhorde/cargo-all-features/releases/download/1.11.0-beta.3/cargo-all-features_1.11.0-beta.3_x86_64-pc-windows-gnu.zip" --pkg-fmt="zip"
+      - name: 🔺 Update 🔺
+        if: inputs.update
+        run: cargo update
       - name: 📎 Clippy 📎
         run: cargo clippy-all-features -- -Dwarnings

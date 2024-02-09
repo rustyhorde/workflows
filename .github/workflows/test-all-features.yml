@@ -23,6 +23,11 @@ on:
         default: 1
         required: false
         type: number
+      update:
+        description: 'Run `cargo update` before running clippy command'
+        required: false
+        default: false
+        type: boolean
 
 name: 🧪 Test 🧪
 
@@ -58,5 +63,8 @@ jobs:
         uses: cargo-bins/cargo-binstall@main
       - name: 💾 Install (all-features) 💾
         run: cargo binstall --no-confirm --no-symlinks cargo-all-features --force
+      - name: 🔺 Update 🔺
+        if: inputs.update
+        run: cargo update
       - name: 🧪 Test 🧪
         run:  cargo test-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }}
