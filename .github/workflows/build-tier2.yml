@@ -42,9 +42,9 @@ jobs:
           cache-all-crates: true
       - name: 💾 Install (cargo-binstall) 💾
         uses: cargo-bins/cargo-binstall@main
-      - name: 💾 Install (all-features) 💾
-        run: cargo binstall --no-confirm --no-symlinks cargo-all-features --force
+      - name: 💾 Install (cargo-matrix) 💾
+        run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
       - name: 💾 Install (cross) 💾
         run: cargo binstall --no-confirm --no-symlinks cross --force
       - name: 🧱 Build 🧱
-        run: cross build-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{inputs.chunk }} --target=${{ inputs.target }}
+        run: cross matrix build --target=${{ inputs.target }}

@@ -61,10 +61,10 @@ jobs:
           cache-all-crates: true
       - name: 💾 Install (cargo-binstall) 💾
         uses: cargo-bins/cargo-binstall@main
-      - name: 💾 Install (all-features) 💾
-        run: cargo binstall --no-confirm --no-symlinks cargo-all-features --force
+      - name: 💾 Install (cargo-matrix) 💾
+        run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
       - name: 🔺 Update 🔺
         if: inputs.update
         run: cargo update
       - name: 🧪 Test 🧪
-        run:  cargo test-all-features --n-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }}
+        run:  cargo matrix test
