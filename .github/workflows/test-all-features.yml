@@ -14,12 +14,12 @@ on:
         required: true
         type: string
       num_chunks:
-        description: 'The number of chunks to run for test-all-features'
+        description: 'The number of chunks to run for cargo-matrix'
         default: 1
         required: false
         type: number
       chunk:
-        description: 'The chunk number to run for test-all-features'
+        description: 'The chunk number to run for cargo-matrix'
         default: 1
         required: false
         type: number
@@ -67,4 +67,4 @@ jobs:
         if: inputs.update
         run: cargo update
       - name: 🧪 Test 🧪
-        run:  cargo matrix test
+        run:  cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} test

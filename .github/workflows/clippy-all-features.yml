@@ -13,6 +13,16 @@ on:
         description: 'The rust target, i.e x86_64-unknown-linux-gnu'
         required: true
         type: string
+      num_chunks:
+        description: 'The number of chunks to run for cargo-matrix'
+        default: 1
+        required: false
+        type: number
+      chunk:
+        description: 'The chunk number to run for cargo-matrix'
+        default: 1
+        required: false
+        type: number
       update:
         description: 'Run cargo update before running clippy command'
         required: false
