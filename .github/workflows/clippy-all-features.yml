@@ -63,4 +63,4 @@ jobs:
         if: inputs.update
         run: cargo update
       - name: 📎 Clippy 📎
-        run: cargo matrix clippy --all-targets -- -Dwarnings
+        run: cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} clippy --all-targets -- -Dwarnings
