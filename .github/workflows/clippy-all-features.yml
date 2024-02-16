@@ -35,6 +35,10 @@ jobs:
   clippy-all-features:
     name: 🕳️ Lints 🕳️
     runs-on: ${{ inputs.os }}
+    env:
+      ARANGODB_ROOT_PASSWORD: ${{ secrets.ARANGODB_ROOT_PASSWORD }}
+      ARANGODB_RUARANGO_PASSWORD: ${{ secrets.ARANGODB_RUARANGO_PASSWORD }}
+      ARANGODB_URL: ${{ secrets.ARANGODB_URL }}
     steps:
       - name: ✅ Checkout ✅
         uses: actions/checkout@v4

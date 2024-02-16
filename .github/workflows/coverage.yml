@@ -72,6 +72,9 @@ jobs:
         run: cargo llvm-cov clean --workspace
       - name: 🙊 Code Coverage 🙊
         env:
+          ARANGODB_ROOT_PASSWORD: ${{ secrets.ARANGODB_ROOT_PASSWORD }}
+          ARANGODB_RUARANGO_PASSWORD: ${{ secrets.ARANGODB_RUARANGO_PASSWORD }}
+          ARANGODB_URL: ${{ secrets.ARANGODB_URL }}
           BB8_MONGODB_URL: ${{ secrets.BB8_MONGODB_URL }}
           BB8_MONGODB_USER: ${{ secrets.BB8_MONGODB_USER }}
           BB8_MONGODB_PASSWORD: ${{ secrets.BB8_MONGODB_PASSWORD }}
