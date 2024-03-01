@@ -23,6 +23,11 @@ on:
         default: 1
         required: false
         type: number
+      project:
+        description: 'The project to run cargo-matrix against (useful in workspaces)'
+        default: ''
+        required: false
+        type: string
       update:
         description: 'Run cargo update before running clippy command'
         required: false
@@ -67,4 +72,8 @@ jobs:
         if: inputs.update
         run: cargo update
       - name: 📎 Clippy 📎
+        if: ${{ inputs.project == '' }}
         run: cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} clippy --all-targets -- -Dwarnings
+      - name: 📎 Clippy P 📎
+        if: ${{ inputs.project != '' }}
+        run: cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} -p ${{ inputs.project }} clippy --all-targets -- -Dwarnings

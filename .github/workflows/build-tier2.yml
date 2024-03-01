@@ -15,6 +15,11 @@ on:
         default: 1
         required: false
         type: number
+      project:
+        description: 'The project to run cargo-matrix against (useful in workspaces)'
+        default: ''
+        required: false
+        type: string
 
 name: 🦀 Rust (Tier 2) 🦀
 
@@ -47,4 +52,8 @@ jobs:
       - name: 💾 Install (cross) 💾
         run: cargo binstall --no-confirm --no-symlinks cross --force
       - name: 🧱 Build 🧱
+        if: ${{ inputs.project == '' }}
         run: cross matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} build --target=${{ inputs.target }}
+      - name: 🧱 Build P 🧱
+        if: ${{ inputs.project != '' }}
+        run: cross matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} -p ${{ inputs.project }} build --target=${{ inputs.target }}
