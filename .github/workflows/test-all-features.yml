@@ -59,9 +59,9 @@ jobs:
       - name: 🧹 Cleanup 🧹
         if: inputs.os == 'windows-latest'
         run: |
-          if exist C:\Users\runneradmin\.cargo\bin\rustfmt.exe del C:\Users\runneradmin\.cargo\bin\rustfmt.exe
-          if exist C:\Users\runneradmin\.cargo\bin\cargo-fmt.exe del C:\Users\runneradmin\.cargo\bin\cargo-fmt.exe
-          if exist C:\Users\runneradmin\.cargo\bin\rust-analyzer.exe del C:\Users\runneradmin\.cargo\bin\rust-analyzer.exe
+          If (Test-Path C:\Users\runneradmin\.cargo\bin\rustfmt.exe) { Remove-Item C:\Users\runneradmin\.cargo\bin\rustfmt.exe }
+          If (Test-Path C:\Users\runneradmin\.cargo\bin\cargo-fmt.exe) { Remove-Item C:\Users\runneradmin\.cargo\bin\cargo-fmt.exe }
+          If (Test-Path C:\Users\runneradmin\.cargo\bin\rust-analyzer.exe) { Remove-Item C:\Users\runneradmin\.cargo\bin\rust-analyzer.exe }
       - name: 🧰 Toolchain 🧰
         run: |
           rustup toolchain remove ${{ inputs.channel }}-${{ inputs.target }}
