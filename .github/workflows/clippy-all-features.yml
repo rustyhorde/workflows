@@ -62,7 +62,7 @@ jobs:
       - name: 🧰 Toolchain 🧰
         run: |
           rustup toolchain remove ${{ inputs.channel }}
-          rustup toolchain install ${{ inputs.channel }} --profile default
+          rustup toolchain install ${{ inputs.channel }} --profile default --no-self-update
           rustup default ${{ inputs.channel }}
       - name: 💵 Rust Cache 💵
         uses: Swatinem/rust-cache@v2

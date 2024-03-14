@@ -58,7 +58,7 @@ jobs:
       - name: 🧰 Toolchain 🧰
         run: |
           rustup toolchain remove ${{ inputs.channel }}-${{ inputs.target }}
-          rustup toolchain add ${{ inputs.channel }}-${{ inputs.target }} --profile minimal
+          rustup toolchain install ${{ inputs.channel }}-${{ inputs.target }} --profile minimal --no-self-update
           rustup default ${{ inputs.channel }}
           rustup component add llvm-tools-preview
       - name: 💵 Rust Cache 💵
