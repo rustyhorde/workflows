@@ -51,10 +51,7 @@ jobs:
           rm -rf /home/runner/.cargo/bin/rust-analyzer
       - name: 🧹 Cleanup 🧹
         if: inputs.os == 'windows-latest'
-        run: |
-          del C:\Users\runneradmin\.cargo\bin\rustfmt
-          del C:\Users\runneradmin\.cargo\bin\cargo-fmt
-          del C:\Users\runneradmin\.cargo\bin\rust-analyzer
+        run: del C:\Users\runneradmin\.cargo\bin\*.*
       - name: 🧰 Toolchain 🧰
         run: |
           rustup toolchain remove ${{ inputs.channel }}-${{ inputs.target }}
