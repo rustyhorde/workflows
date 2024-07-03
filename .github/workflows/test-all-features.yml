@@ -78,7 +78,8 @@ jobs:
         uses: cargo-bins/cargo-binstall@main
       - name: 💾 Install (cargo-binstall) 💾
         if: inputs.os == 'macos-latest'
-        uses: cargo install cargo-binstall --force
+        run: |
+          cargo install cargo-binstall --force
       - name: 💾 Install (cargo-matrix) 💾
         run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
       - name: 🔺 Update 🔺
