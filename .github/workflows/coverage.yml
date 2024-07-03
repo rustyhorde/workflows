@@ -73,7 +73,10 @@ jobs:
       - name: 💾 Install (cargo-binstall) 💾
         if: inputs.os == 'macos-latest'
         run: |
+          rustup toolchain install nightly
+          rustup override set nightly
           cargo install cargo-binstall --force
+          rustup override remove
       - name: 💾 Install (llvm-cov) 💾
         run: cargo binstall --no-confirm --no-symlinks cargo-llvm-cov --force
       - name: 💾 Install (cargo-matrix) 💾
