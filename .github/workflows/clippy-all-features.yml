@@ -71,7 +71,11 @@ jobs:
           key: ${{ inputs.target }}
           cache-all-crates: true
       - name: 💾 Install (cargo-binstall) 💾
+        if: inputs.os == 'ubuntu-latest' || inputs.os == 'windows-latest'
         uses: cargo-bins/cargo-binstall@main
+      - name: 💾 Install (cargo-binstall) 💾
+        if: inputs.os == 'macos-latest'
+        uses: cargo install cargo-binstall --force
       - name: 💾 Install (cargo-matrix) 💾
         run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
       - name: 🔺 Update 🔺
