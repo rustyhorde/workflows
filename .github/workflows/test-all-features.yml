@@ -76,14 +76,15 @@ jobs:
       - name: 💾 Install (cargo-binstall) 💾
         if: inputs.os == 'ubuntu-latest' || inputs.os == 'windows-latest'
         uses: cargo-bins/cargo-binstall@main
-      - name: 💾 Install (cargo-binstall) 💾
+      - name: 💾 Install (cargo-matrix) 💾
         if: inputs.os == 'macos-latest'
         run: |
           rustup toolchain install nightly
           rustup override set nightly
-          cargo install cargo-binstall --force
+          cargo install cargo-matrix --force
           rustup override remove
       - name: 💾 Install (cargo-matrix) 💾
+        if: inputs.os == 'ubuntu-latest' || inputs.os == 'windows-latest'
         run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
       - name: 🔺 Update 🔺
         if: inputs.update
