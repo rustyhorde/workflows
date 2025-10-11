@@ -80,10 +80,18 @@ jobs:
           rustup override remove
       - name: 💾 Install (llvm-cov) 💾
         if: inputs.os == 'ubuntu-latest' || inputs.os == 'windows-latest'
-        run: cargo binstall --no-confirm --no-symlinks cargo-llvm-cov --force
+        run: |
+          rustup toolchain install nightly
+          rustup override set nightly
+          cargo binstall --no-confirm --no-symlinks cargo-llvm-cov --force
+          rustup override remove
       - name: 💾 Install (cargo-matrix) 💾
         if: inputs.os == 'ubuntu-latest' || inputs.os == 'windows-latest'
-        run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
+        run: |
+          rustup toolchain install nightly
+          rustup override set nightly
+          cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
+          rustup override remove
       - name: 🙊 Clean Workspace 🙊
         if: inputs.clean
         run: cargo llvm-cov clean --workspace
