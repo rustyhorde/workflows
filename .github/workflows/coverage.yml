@@ -90,7 +90,7 @@ jobs:
         run: |
           rustup toolchain install nightly
           rustup override set nightly
-          cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
+          cargo binstall --no-confirm --no-symlinks --no-discover-github-token --strategies compile cargo-matrix --force
           rustup override remove
       - name: 🙊 Clean Workspace 🙊
         if: inputs.clean
