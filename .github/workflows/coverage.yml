@@ -77,7 +77,7 @@ jobs:
           rustup override set nightly
           cargo install cargo-llvm-cov --force
           cargo install cargo-matrix --force
-          cargo install cargo-nextest --force
+          cargo install --locked cargo-nextest --force
           rustup override remove
       - name: 💾 Install (llvm-cov) 💾
         if: inputs.os == 'ubuntu-latest'
