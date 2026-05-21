@@ -42,7 +42,7 @@ jobs:
     runs-on: ${{ inputs.os }}
     steps:
       - name: ✅ Checkout ✅
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: 🧹 Cleanup 🧹
         if: inputs.os == 'ubuntu-latest'
         run: |
@@ -62,13 +62,13 @@ jobs:
           rustup default ${{ inputs.channel }}
           rustup component add llvm-tools-preview
       - name: 💵 Rust Cache 💵
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@c19371144df3bb44fab255c43d04cbc2ab54d1c4 # v2.9.1
         if: ${{ github.event_name != 'pull_request' || ! github.event.pull_request.head.repo.fork }}
         with:
           key: ${{ inputs.target }}
           cache-all-crates: true
       - name: 💾 Install (cargo-binstall) 💾
-        uses: cargo-bins/cargo-binstall@main
+        uses: cargo-bins/cargo-binstall@aaa84a43aec4955a42c5ffc65d258961e39f276e # v1.19.1
       - name: 💾 Install (llvm-cov) 💾
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -116,7 +116,7 @@ jobs:
         run: cargo llvm-cov report --html
       - name: 🙊 Upload Code Coverage 🙊
         if: inputs.lcov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
