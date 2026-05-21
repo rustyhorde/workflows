@@ -68,33 +68,20 @@ jobs:
           key: ${{ inputs.target }}
           cache-all-crates: true
       - name: 💾 Install (cargo-binstall) 💾
-        if: inputs.os == 'ubuntu-latest'
         uses: cargo-bins/cargo-binstall@main
-      - name: 💾 Install (cargo-llvm-cov, cargo-matrix, cargo-nextest) 💾
-        if: inputs.os == 'macos-latest' || inputs.os == 'windows-latest'
-        run: |
-          rustup toolchain install nightly
-          rustup override set nightly
-          cargo install cargo-llvm-cov --force
-          cargo install cargo-matrix --force
-          cargo install --locked cargo-nextest --force
-          rustup override remove
       - name: 💾 Install (llvm-cov) 💾
-        if: inputs.os == 'ubuntu-latest'
         run: |
           rustup toolchain install nightly
           rustup override set nightly
           cargo binstall --no-confirm --no-symlinks cargo-llvm-cov --force
           rustup override remove
       - name: 💾 Install (cargo-matrix) 💾
-        if: inputs.os == 'ubuntu-latest'
         run: |
           rustup toolchain install nightly
           rustup override set nightly
           cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
           rustup override remove
       - name: 💾 Install (cargo-nextest) 💾
-        if: inputs.os == 'ubuntu-latest'
         run: |
           rustup toolchain install nightly
           rustup override set nightly
