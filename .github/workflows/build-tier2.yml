@@ -48,8 +48,14 @@ jobs:
       - name: 💾 Install (cargo-binstall) 💾
         uses: cargo-bins/cargo-binstall@main
       - name: 💾 Install (cargo-matrix) 💾
-        run: cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BINSTALL_MAXIMUM_RESOLUTION_TIMEOUT: "20"
+        run: cargo binstall --no-confirm --no-symlinks cargo-matrix --force
       - name: 💾 Install (cross) 💾
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BINSTALL_MAXIMUM_RESOLUTION_TIMEOUT: "20"
         run: cargo binstall --no-confirm --no-symlinks cross --force
       - name: 🧱 Build 🧱
         if: ${{ inputs.project == '' }}

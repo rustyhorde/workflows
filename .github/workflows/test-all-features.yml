@@ -76,10 +76,13 @@ jobs:
       - name: 💾 Install (cargo-binstall) 💾
         uses: cargo-bins/cargo-binstall@main
       - name: 💾 Install (cargo-matrix) 💾
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BINSTALL_MAXIMUM_RESOLUTION_TIMEOUT: "20"
         run: |
           rustup toolchain install nightly
           rustup override set nightly
-          cargo binstall --no-confirm --no-symlinks --no-discover-github-token cargo-matrix --force
+          cargo binstall --no-confirm --no-symlinks cargo-matrix --force
           rustup override remove
       - name: 🔺 Update 🔺
         if: inputs.update
