@@ -33,6 +33,11 @@ on:
         required: false
         default: false
         type: boolean
+      nextest:
+        description: 'Use cargo-nextest instead of cargo test'
+        required: false
+        default: false
+        type: boolean
 
 name: 🧪 Test 🧪
 
@@ -84,12 +89,28 @@ jobs:
           rustup override set nightly
           cargo binstall --no-confirm --no-symlinks cargo-matrix --force
           rustup override remove
+      - name: 💾 Install (cargo-nextest) 💾
+        if: inputs.nextest
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BINSTALL_MAXIMUM_RESOLUTION_TIMEOUT: "20"
+        run: |
+          rustup toolchain install nightly
+          rustup override set nightly
+          cargo binstall --no-confirm --no-symlinks cargo-nextest --force
+          rustup override remove
       - name: 🔺 Update 🔺
         if: inputs.update
         run: cargo update
       - name: 🧪 Test 🧪
-        if: ${{ inputs.project == '' }}
-        run:  cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} test
+        if: ${{ inputs.project == '' && !inputs.nextest }}
+        run: cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} test
       - name: 🧪 Test P 🧪
-        if: ${{ inputs.project != '' }}
-        run:  cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} -p ${{ inputs.project }} test
+        if: ${{ inputs.project != '' && !inputs.nextest }}
+        run: cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} -p ${{ inputs.project }} test
+      - name: 🧪 Test (nextest) 🧪
+        if: ${{ inputs.project == '' && inputs.nextest }}
+        run: cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} nextest run
+      - name: 🧪 Test P (nextest) 🧪
+        if: ${{ inputs.project != '' && inputs.nextest }}
+        run: cargo matrix --num-chunks ${{ inputs.num_chunks }} --chunk ${{ inputs.chunk }} -p ${{ inputs.project }} nextest run
